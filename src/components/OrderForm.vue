@@ -30,18 +30,18 @@
                     <div :class="['check fas fa-check', page>2? ' active' : '']"></div>
                 </div>
                 <div class="step">
-                    <p :class="page>3? 'active' : ''">Podsumowanie</p>
-                    <div :class="[ page > 3 ? 'bullet active' : 'bullet' ]">
+                    <p :class="page>2? 'active' : ''">Podsumowanie</p>
+                    <div :class="[ page > 2 ? 'bullet active' : 'bullet' ]">
                         <span>4</span>
                     </div>
-                    <div :class="['check fas fa-check', page>3? ' active' : '']"></div>
+                    <div :class="['check fas fa-check', page>2? ' active' : '']"></div>
                 </div>
                 <div class="step">
-                    <p :class="page>4? 'active' : ''">Koniec</p>
-                    <div :class="[ page > 4 ? 'bullet active' : 'bullet' ]">
+                    <p :class="page>3? 'active' : ''">Koniec</p>
+                    <div :class="[ page > 3 ? 'bullet active' : 'bullet' ]">
                         <span>5</span>
                     </div>
-                    <div :class="['check fas fa-check', page>4? ' active' : '']"></div>
+                    <div :class="['check fas fa-check', page>3? ' active' : '']"></div>
                 </div>
             </div>
             <div class="form-outer">
@@ -128,33 +128,30 @@
                         </div>
                     </div>
                     <div class="page">
-                        <div class="confirmation" style="height: 140px;">
-                            <div> <b>Podsumowanie zamówienia:</b></div>
-                            <div><b>Dostawa</b></div>
-
-                            <div>Nadruk: {{posNames}}
-                                {{price}} jedn.
+                        <div class="confirmation">
+                            <div class="confirmationSection ">
+                                <div><b>Podsumowanie zamówienia:</b></div>
+                                <div class="leftFloat"><span>T-shirt biały , nadruk: {{posNames}}</span></div>
+                                <div class="rightFloat"><span> {{price}} jedn.</span></div>
                             </div>
-                            <div>{{user.name}}
-                                {{user.surname}}
-                                {{user.street}}
-                                {{user.house}}, m. {{user.flat}}
-                                {{user.phone}}
-                                {{user.email}}
+                            <div class="confirmationSection">
+                                <div><b>Dostawa</b></div>
+                                <div class="leftFloat">Zamawiający:</div><div class="rightFloat"> {{user.name}} {{user.surname}}</div>
+                                <div class="leftFloat">Adres:</div><div class="rightFloat"> {{user.street}} {{user.house}}, m. {{user.flat}}</div>
+                                <div class="leftFloat">Telefon: </div><div class="rightFloat">{{user.phone}}</div>
+                                <div class="leftFloat">Email: </div><div class="rightFloat lowercase"> {{user.email}}</div>
                             </div>
 
                         </div>
                         <div class="field btns">
                             <button @click="slide(2)">Cofnij</button>
-                            <button @click="slide(4)">Dalej</button>
+                            <button class="makeOrderButton" @click="slide(4)">Złóż zamówienie</button>
                         </div>
                     </div>
                     <div class="page">
-                        <div style="height: 140px;"></div>
+                        <div style="height: 140px; ">Thank You</div>
 
                         <div class="field btns">
-                            <button @click="slide(3)">Cofnij</button>
-                            <button class="submit" @click="page=5">Submit</button>
                         </div>
                     </div>
 
@@ -372,11 +369,13 @@
         border-radius: 5px;
         background: #403D75;
         color: #fff;
-        font-size: 18px;
+        font-size: 13px;
         font-weight: 600;
         letter-spacing: 1px;
         text-transform: uppercase;
         cursor: pointer;
+        margin-right: 2px;
+        margin-left: 2px;
     }
 
     .form-outer form .page .field button:hover {
@@ -392,10 +391,6 @@
         bottom: 0px;
     }
 
-    form .page .btns button {
-        margin-right: 3px;
-        font-size: 17px;
-    }
 
     form .page .btns button:disabled {
         margin-right: 3px;
@@ -539,22 +534,29 @@
     .error {
         outline-color: #F99;
     }
-
-    .confirmation p {
-        font-size: 14px;
-        font-weight: 500;
+    .confirmation{
+        height: 120px;
     }
 
-    /*.confirmation {*/
-    /*    margin-top: 10px;*/
-    /*    font-size: 12px;*/
-    /*    !*margin-bottom: 5px;*!*/
-    /*    display: grid;*/
-    /*    grid-template-columns: auto auto;*/
-    /*    grid-template-rows: 30% auto;*/
-    /*}*/
-    /*.confirmation b{*/
-    /*    font-size: 16px;*/
-    /*}*/
+    .confirmationSection {
+        margin-top: 20px;
+        text-align: initial;
+        width: 85%;
+        font-size: 14px;
+    }
+    .leftFloat{
+        float:left;
+        clear: both;
+    }
+    .rightFloat{
+        float:right;
+    }
+    .lowercase{
+        text-transform: lowercase;
+    }
+    .makeOrderButton{
+
+    }
+
 
 </style>
