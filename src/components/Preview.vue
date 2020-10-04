@@ -1,5 +1,5 @@
 <template>
-    <div class="previewContainer" style="display: flex">
+    <div class="previewContainer" >
         <div style="position:relative;">
             <img width="380" height="380" src="../assets/front.png" alt="">
             <img v-show="location.includes(0)"
@@ -28,8 +28,8 @@
 <style scoped>
 
     .previewContainer {
-        width: 100%;
-        height: calc(100% - 290px);
+        /*width: 100%;*/
+        /*height: calc(100% - 290px);*/
         background: greenyellow;
         display: flex;
         justify-content: center;

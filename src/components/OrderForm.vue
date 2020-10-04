@@ -86,45 +86,64 @@
                         </div>
                     </div>
                     <div class="page">
-                        <div class="field inline-labels">
+                        <div class="field inline-labels ">
 
-                            <div style="width:50%">
-                                <!--                            <div class="label">Imię</div>-->
-                                <input v-model:="user.name" type="text" class="text" placeholder="Imię"></div>
-                            <div style="width:50%">
-                                <!--                            <div class="label">Nazwisko</div>-->
-                                <input v-model:="user.surname" type="text" class="text" placeholder="Nazwisko"></div>
+                            <div style="width:50%" class="form-group"
+                                 :class="{'form-group--error': $v.user.name.$error }">
+                                <input v-model.trim="$v.user.name.$model" type="text" class="text form__input"
+                                       placeholder="imię">
+                            </div>
+                            <div style="width:50%" class="form-group"
+                                 :class="{'form-group--error': $v.user.surname.$error }">
+                                <input v-model.trim="$v.user.surname.$model" type="text" class="text"
+                                       placeholder="nazwisko"></div>
                         </div>
                         <div class="field inline-labels">
-                            <div style="width:60%">
-                                <!--                                <div class="label ">Ulica</div>-->
-                                <input v-model:="user.street" type="text" class="text" placeholder="Ulica">
+                            <div style="width:60%" class="form-group"
+                                 :class="{'form-group--error': $v.user.street.$error }">
+                                <input v-model.trim="$v.user.street.$model" type="text" class="text"
+                                       placeholder="ulica">
                             </div>
-                            <div style="width:20%">
-                                <!--                                <div class="label ">bud</div>-->
-                                <input v-model:="user.house" type="number" class="text" placeholder="budynek">
+                            <div style="width:20%" class="form-group"
+                                 :class="{'form-group--error': $v.user.house.$error }">
+                                <input v-model="$v.user.house.$model" type="text" class="text" placeholder="budynek">
                             </div>
-                            <div style="width:20%">
-                                <!--                                <div class="label">m</div>-->
-                                <input v-model:="user.flat" type="number" class="text" placeholder="mieszkanie">
+                            <div style="width:20%" class="form-group"
+                                 :class="{'form-group--error': $v.user.flat.$error }">
+                                <input v-model="$v.user.flat.$model" type="text" class="text" placeholder="mieszkanie">
                             </div>
                         </div>
-
-                        <div class="field">
-                            <!--                            <div class="label">Telefon</div>-->
-                            <input v-model:="user.phone" type="text" class="text" placeholder="telefon">
+                        <div class="field form-group"
+                             :class="{'form-group--error': $v.user.phone.$error }">
+                            <input v-model.trim="$v.user.phone.$model" type="text" class="text" placeholder="telefon">
                         </div>
-                        <div class="field">
-                            <!--                            <div class="label">e-mail</div>-->
-                            <input v-model:="user.email" type="text" class="text" placeholder="email">
+                        <div class="field form-group"
+                             :class="{'form-group--error': $v.user.email.$error }">
+                            <input v-model.trim="$v.user.email.$model" type="text" class="text" placeholder="email">
                         </div>
                         <div class="field btns">
                             <button @click="slide(1)">Cofnij</button>
                             <button @click="slide(3)">Dalej</button>
+                            <!--                            <button :disabled="$v.user.$invalid" @click="slide(3)">Dalej</button>-->
                         </div>
                     </div>
                     <div class="page">
-                        <div style="height: 140px;"></div>
+                        <div class="confirmation" style="height: 140px;">
+                            <div> <b>Podsumowanie zamówienia:</b></div>
+                            <div><b>Dostawa</b></div>
+
+                            <div>Nadruk: {{posNames}}
+                                {{price}} jedn.
+                            </div>
+                            <div>{{user.name}}
+                                {{user.surname}}
+                                {{user.street}}
+                                {{user.house}}, m. {{user.flat}}
+                                {{user.phone}}
+                                {{user.email}}
+                            </div>
+
+                        </div>
                         <div class="field btns">
                             <button @click="slide(2)">Cofnij</button>
                             <button @click="slide(4)">Dalej</button>
@@ -149,6 +168,14 @@
 <script>
     import Preview from "@/components/Preview";
     import * as _ from "underscore";
+    import {required, minLength} from 'vuelidate/lib/validators'
+    import Vue from 'vue';
+    import {Vuelidate} from "vuelidate";
+    import email from "vuelidate/lib/validators/email";
+    import alpha from "vuelidate/lib/validators/alpha";
+    import numeric from "vuelidate/lib/validators/numeric";
+
+    Vue.use(Vuelidate);
 
     export default {
         name: "OrderForm",
@@ -161,9 +188,9 @@
                     name: "",
                     surname: "",
                     street: "",
-                    house: -1,
-                    flat: -1,
-                    phone: -1,
+                    house: "",
+                    flat: "",
+                    phone: "",
                     email: ""
                 },
                 positions: [
@@ -176,23 +203,63 @@
                 selectedImages: []
             }
         },
+        computed: {
+            posNames: function () {
+                return _.pluck(this.positions, 'name').join(' i ').toLowerCase()
+            },
+            price: function () {
+                return this.positions.length * 10;
+            }
+        },
+        validations() {
+            return {
+                user: {
+                    name: {
+                        required,
+                        alpha,
+                        minLength: minLength(2),
+                    },
+                    surname: {
+                        required,
+                        alpha,
+                        minLength: minLength(2),
+                    },
+                    street: {
+                        required,
+                        minLength: minLength(3),
+                    },
+                    house: {
+                        required
+                    },
+                    flat: {
+                        required,
+                        numeric
+                    },
+                    phone: {
+                        required,
+                        nineDigitValidator: function (value) {
+                            return value.length === 9 && _.every(value, (v) => _.isNumber(v * 1));
+                        }
+                    },
+                    email: {
+                        required,
+                        email
+                    }
+                }
+            }
+        }
+        ,
         mounted() {
             this.reloadImage()
-        },
-        // watch: {
-        //     imgUrl: function (newVal, oldVal) {
-        //         if (newVal !== oldVal) {
-        //             this.previousImg = oldVal;
-        //         }
-        //     }
-        // },
+        }
+        ,
+
         methods: {
             slide: function (page) {
                 let margin = -400 * page;
                 this.pageMarginStyle = `margin-left: ${margin}px;`;
                 this.page = page;
-            }
-            ,
+            },
             selectPosition: function (positionId) {
                 if (this.selectedPositions.includes(positionId)) {
                     this.selectedPositions.splice(this.selectedPositions.indexOf(positionId))
@@ -209,14 +276,18 @@
             },
             setPreviousImage: function () {
                 this.imgUrl = _.findWhere(this.selectedImages, {id: this.imgUrl.id - 1});
-            }, setNextImage: function () {
+            }
+            ,
+            setNextImage: function () {
                 this.imgUrl = _.findWhere(this.selectedImages, {id: this.imgUrl.id + 1});
-            },
+            }
+            ,
             previousImageAvailable: function () {
                 return _.any(this.selectedImages, (img) => {
                     return img.id < this.imgUrl.id;
                 })
-            },
+            }
+            ,
             nextImageAvailable: function () {
                 return _.any(this.selectedImages, (img) => {
                     return img.id > this.imgUrl.id;
@@ -291,7 +362,7 @@
         border: 1px solid lightgrey;
         border-radius: 5px;
         font-size: 10px;
-        padding-left: 15px;
+        padding-left: 5px;
     }
 
     .form-outer form .page .field button {
@@ -459,4 +530,31 @@
     .gray {
         color: #ccc;
     }
+
+    .form-group--error input {
+        border-color: red !important;
+        background: #FDD;
+    }
+
+    .error {
+        outline-color: #F99;
+    }
+
+    .confirmation p {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    /*.confirmation {*/
+    /*    margin-top: 10px;*/
+    /*    font-size: 12px;*/
+    /*    !*margin-bottom: 5px;*!*/
+    /*    display: grid;*/
+    /*    grid-template-columns: auto auto;*/
+    /*    grid-template-rows: 30% auto;*/
+    /*}*/
+    /*.confirmation b{*/
+    /*    font-size: 16px;*/
+    /*}*/
+
 </style>
