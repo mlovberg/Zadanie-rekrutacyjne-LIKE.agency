@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="form-outer">
-                        <form action="#">
+                        <div class="form">
                             <div class="page" :style="pageMarginStyle">
                                 <p style="margin-top: 20px;">Wybierz miejsce nadruku</p>
                                 <div style="display: flex;justify-content: space-around; height: 70px; width: 85%; margin-top: 30px">
@@ -182,7 +182,7 @@
 
                             </div>
 
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -276,6 +276,7 @@
         }
         ,
         mounted() {
+            console.log('montujemy')
             this.reloadImage()
         },
         watch: {
@@ -388,24 +389,24 @@
         overflow: hidden;
     }
 
-    .form-outer form {
+    .form-outer .form {
         display: flex;
         width: 500%;
     }
 
-    .form-outer form .page {
+    .form-outer .form .page {
         width: 20%;
         transition: margin-left 0.3s ease-in-out;
         position: relative;
     }
 
-    .form-outer form .page .title {
+    .form-outer .form .page .title {
         text-align: left;
         font-weight: 500;
         font-size: 25px;
     }
 
-    .form-outer form .page .field {
+    .form-outer .form .page .field {
         height: 25px;
         width: 330px;
         margin: 10px 0;
@@ -413,7 +414,7 @@
         position: relative;
     }
 
-    .form-outer form .page .field input {
+    .form-outer .form .page .field input {
         height: 100%;
         width: 100%;
         border: 1px solid lightgrey;
@@ -422,7 +423,7 @@
         padding-left: 5px;
     }
 
-    .form-outer form .page .field button {
+    .form-outer .form .page .field button {
         width: 100%;
         height: calc(100% + 5px);
         border: none;
@@ -438,21 +439,21 @@
         margin-left: 2px;
     }
 
-    .form-outer form .page .field button:hover {
+    .form-outer .form .page .field button:hover {
         background: #262447;
     }
 
-    .form-outer form .page .field button:disabled:hover {
+    .form-outer .form .page .field button:disabled:hover {
         background: #ccc;
     }
 
-    form .page .btns {
+    .form .page .btns {
         position: absolute;
         bottom: 0px;
     }
 
 
-    form .page .btns button:disabled {
+    .form .page .btns button:disabled {
         margin-right: 3px;
         font-size: 17px;
         background: #ccc;
