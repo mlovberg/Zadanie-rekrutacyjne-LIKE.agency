@@ -4,184 +4,186 @@
               href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
               integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
               crossorigin="anonymous">
+        <div class="center">
+            <div class="ellipse">
+                <div class="container">
+                    <div class="progress-bar">
+                        <div class="step">
+                            <p :class="page>0? 'active' : ''">Miejsce</p>
+                            <div :class="[ page > 0 ? 'bullet active' : 'bullet' ]">
+                                <span>1</span>
+                            </div>
+                            <div :class="['check fas fa-check', page>0? ' active' : '']"></div>
+                        </div>
+                        <div class="step">
+                            <p :class="page>1? 'active' : ''">Nadruk</p>
+                            <div :class="[ page > 1 ? 'bullet active' : 'bullet' ]">
+                                <span>2</span>
+                            </div>
+                            <div :class="['check fas fa-check', page>1? ' active' : '']"></div>
+                        </div>
+                        <div class="step">
+                            <p :class="page>2? 'active' : ''">Dostawa</p>
+                            <div :class="[ page > 2 ? 'bullet active' : 'bullet' ]">
+                                <span>3</span>
+                            </div>
+                            <div :class="['check fas fa-check', page>2? ' active' : '']"></div>
+                        </div>
+                        <div class="step">
+                            <p :class="page>2? 'active' : ''">Podsumowanie</p>
+                            <div :class="[ page > 2 ? 'bullet active' : 'bullet' ]">
+                                <span>4</span>
+                            </div>
+                            <div :class="['check fas fa-check', page>2? ' active' : '']"></div>
+                        </div>
+                        <div class="step">
+                            <p :class="page>3? 'active' : ''">Koniec</p>
+                            <div :class="[ page > 3 ? 'bullet active' : 'bullet' ]">
+                                <span>5</span>
+                            </div>
+                            <div :class="['check fas fa-check', page>3? ' active' : '']"></div>
+                        </div>
+                    </div>
+                    <div class="form-outer">
+                        <form action="#">
+                            <div class="page" :style="pageMarginStyle">
+                                <p style="margin-top: 20px;">Wybierz miejsce nadruku</p>
+                                <div style="display: flex;justify-content: space-around; height: 70px; width: 85%; margin-top: 30px">
 
-        <div class="ellipse">
-            <div class="container">
-                <div class="progress-bar">
-                    <div class="step">
-                        <p :class="page>0? 'active' : ''">Miejsce</p>
-                        <div :class="[ page > 0 ? 'bullet active' : 'bullet' ]">
-                            <span>1</span>
-                        </div>
-                        <div :class="['check fas fa-check', page>0? ' active' : '']"></div>
-                    </div>
-                    <div class="step">
-                        <p :class="page>1? 'active' : ''">Nadruk</p>
-                        <div :class="[ page > 1 ? 'bullet active' : 'bullet' ]">
-                            <span>2</span>
-                        </div>
-                        <div :class="['check fas fa-check', page>1? ' active' : '']"></div>
-                    </div>
-                    <div class="step">
-                        <p :class="page>2? 'active' : ''">Dostawa</p>
-                        <div :class="[ page > 2 ? 'bullet active' : 'bullet' ]">
-                            <span>3</span>
-                        </div>
-                        <div :class="['check fas fa-check', page>2? ' active' : '']"></div>
-                    </div>
-                    <div class="step">
-                        <p :class="page>2? 'active' : ''">Podsumowanie</p>
-                        <div :class="[ page > 2 ? 'bullet active' : 'bullet' ]">
-                            <span>4</span>
-                        </div>
-                        <div :class="['check fas fa-check', page>2? ' active' : '']"></div>
-                    </div>
-                    <div class="step">
-                        <p :class="page>3? 'active' : ''">Koniec</p>
-                        <div :class="[ page > 3 ? 'bullet active' : 'bullet' ]">
-                            <span>5</span>
-                        </div>
-                        <div :class="['check fas fa-check', page>3? ' active' : '']"></div>
-                    </div>
-                </div>
-                <div class="form-outer">
-                    <form action="#">
-                        <div class="page" :style="pageMarginStyle">
-                            <p style="margin-top: 20px;">Wybierz miejsce nadruku</p>
-                            <div style="display: flex;justify-content: space-around; height: 70px; width: 85%; margin-top: 30px">
+                                    <div v-for="pos in positions" :key="pos.id"
+                                         :class="['printPosition', selectedPositions.includes(pos.id) ? 'active':'']"
+                                         style="display: grid">
+                                        <i class="fas fa-check-circle fa-3x " @click="selectPosition(pos.id)"></i>
+                                        <span>{{pos.name}}</span>
+                                    </div>
 
-                                <div v-for="pos in positions" :key="pos.id"
-                                     :class="['printPosition', selectedPositions.includes(pos.id) ? 'active':'']"
-                                     style="display: grid">
-                                    <i class="fas fa-check-circle fa-3x " @click="selectPosition(pos.id)"></i>
-                                    <span>{{pos.name}}</span>
                                 </div>
-
+                                <div class="field btns">
+                                    <button :disabled="!selectedPositions.length" @click="slide(1)">Dalej</button>
+                                </div>
                             </div>
-                            <div class="field btns">
-                                <button :disabled="!selectedPositions.length" @click="slide(1)">Dalej</button>
-                            </div>
-                        </div>
-                        <div class="page">
-                            <div style="height: 140px; width: 85%;">
-                                <div>
-                                    <div style="position:relative;">
-                                        <i style="position:absolute; left:85px;top:30px;"
-                                           :class="['fas fa-caret-left fa-3x', previousImageAvailable()  ? '' : 'gray' ]"
-                                           @click="setPreviousImage">
-                                        </i>
+                            <div class="page">
+                                <div style="height: 140px; width: 85%;">
+                                    <div>
+                                        <div style="position:relative;">
+                                            <i style="position:absolute; left:85px;top:30px;"
+                                               :class="['fas fa-caret-left fa-3x', previousImageAvailable()  ? '' : 'gray' ]"
+                                               @click="setPreviousImage">
+                                            </i>
 
-                                        <img width="100px" height="100px" :src="imgUrl.url" alt="">
-                                        <i style="position:absolute; right:85px;top:30px;"
-                                           :class="['fas fa-caret-right fa-3x', nextImageAvailable()  ? '' : 'gray' ]"
-                                           @click="setNextImage">
-                                        </i>
+                                            <img width="100px" height="100px" :src="imgUrl.url" alt="">
+                                            <i style="position:absolute; right:85px;top:30px;"
+                                               :class="['fas fa-caret-right fa-3x', nextImageAvailable()  ? '' : 'gray' ]"
+                                               @click="setNextImage">
+                                            </i>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-sync-alt fa-2x" @click="reloadImage"></i>
+                                </div>
+                                <div class="field btns">
+                                    <button @click="slide(0)">Cofnij</button>
+                                    <button @click="slide(2)">Dalej</button>
+                                </div>
+                            </div>
+                            <div class="page">
+                                <div class="field inline-labels ">
+
+                                    <div style="width:50%" class="form-group"
+                                         :class="{'form-group--error': $v.user.name.$error }">
+                                        <input v-model.trim="$v.user.name.$model" type="text" class="text form__input"
+                                               placeholder="imię">
+                                    </div>
+                                    <div style="width:50%" class="form-group"
+                                         :class="{'form-group--error': $v.user.surname.$error }">
+                                        <input v-model.trim="$v.user.surname.$model" type="text" class="text"
+                                               placeholder="nazwisko"></div>
+                                </div>
+                                <div class="field inline-labels">
+                                    <div style="width:60%" class="form-group"
+                                         :class="{'form-group--error': $v.user.street.$error }">
+                                        <input v-model.trim="$v.user.street.$model" type="text" class="text"
+                                               placeholder="ulica">
+                                    </div>
+                                    <div style="width:20%" class="form-group"
+                                         :class="{'form-group--error': $v.user.house.$error }">
+                                        <input v-model="$v.user.house.$model" type="text" class="text"
+                                               placeholder="budynek">
+                                    </div>
+                                    <div style="width:20%" class="form-group"
+                                         :class="{'form-group--error': $v.user.flat.$error }">
+                                        <input v-model="$v.user.flat.$model" type="text" class="text"
+                                               placeholder="mieszkanie">
                                     </div>
                                 </div>
-                                <i class="fas fa-sync-alt fa-2x" @click="reloadImage"></i>
+                                <div class="field form-group"
+                                     :class="{'form-group--error': $v.user.phone.$error }">
+                                    <input v-model.trim="$v.user.phone.$model" type="text" class="text"
+                                           placeholder="telefon">
+                                </div>
+                                <div class="field form-group"
+                                     :class="{'form-group--error': $v.user.email.$error }">
+                                    <input v-model.trim="$v.user.email.$model" type="text" class="text"
+                                           placeholder="email">
+                                </div>
+                                <div class="field btns">
+                                    <button @click="slide(1)">Cofnij</button>
+                                    <button :disabled="$v.user.$invalid" @click="slide(3)">Dalej</button>
+                                </div>
                             </div>
-                            <div class="field btns">
-                                <button @click="slide(0)">Cofnij</button>
-                                <button @click="slide(2)">Dalej</button>
-                            </div>
-                        </div>
-                        <div class="page">
-                            <div class="field inline-labels ">
+                            <div class="page">
+                                <div class="confirmation">
+                                    <div class="confirmationSection ">
+                                        <div><b>Podsumowanie zamówienia:</b></div>
+                                        <div class="leftFloat"><span>T-shirt biały , nadruk: {{posNames}}</span></div>
+                                        <div class="rightFloat"><span> {{price}} jedn.</span></div>
+                                    </div>
+                                    <div class="confirmationSection">
+                                        <div><b>Dostawa</b></div>
+                                        <div class="leftFloat">Zamawiający:</div>
+                                        <div class="rightFloat"> {{user.name}} {{user.surname}}</div>
+                                        <div class="leftFloat">Adres:</div>
+                                        <div class="rightFloat"> {{user.street}} {{user.house}}, m. {{user.flat}}</div>
+                                        <div class="leftFloat">Telefon:</div>
+                                        <div class="rightFloat">{{user.phone}}</div>
+                                        <div class="leftFloat">Email:</div>
+                                        <div class="rightFloat lowercase"> {{user.email}}</div>
+                                    </div>
 
-                                <div style="width:50%" class="form-group"
-                                     :class="{'form-group--error': $v.user.name.$error }">
-                                    <input v-model.trim="$v.user.name.$model" type="text" class="text form__input"
-                                           placeholder="imię">
                                 </div>
-                                <div style="width:50%" class="form-group"
-                                     :class="{'form-group--error': $v.user.surname.$error }">
-                                    <input v-model.trim="$v.user.surname.$model" type="text" class="text"
-                                           placeholder="nazwisko"></div>
-                            </div>
-                            <div class="field inline-labels">
-                                <div style="width:60%" class="form-group"
-                                     :class="{'form-group--error': $v.user.street.$error }">
-                                    <input v-model.trim="$v.user.street.$model" type="text" class="text"
-                                           placeholder="ulica">
-                                </div>
-                                <div style="width:20%" class="form-group"
-                                     :class="{'form-group--error': $v.user.house.$error }">
-                                    <input v-model="$v.user.house.$model" type="text" class="text"
-                                           placeholder="budynek">
-                                </div>
-                                <div style="width:20%" class="form-group"
-                                     :class="{'form-group--error': $v.user.flat.$error }">
-                                    <input v-model="$v.user.flat.$model" type="text" class="text"
-                                           placeholder="mieszkanie">
+                                <div class="field btns">
+                                    <button @click="slide(2)">Cofnij</button>
+                                    <button class="makeOrderButton" @click="order">Złóż zamówienie</button>
                                 </div>
                             </div>
-                            <div class="field form-group"
-                                 :class="{'form-group--error': $v.user.phone.$error }">
-                                <input v-model.trim="$v.user.phone.$model" type="text" class="text"
-                                       placeholder="telefon">
-                            </div>
-                            <div class="field form-group"
-                                 :class="{'form-group--error': $v.user.email.$error }">
-                                <input v-model.trim="$v.user.email.$model" type="text" class="text" placeholder="email">
-                            </div>
-                            <div class="field btns">
-                                <button @click="slide(1)">Cofnij</button>
-                                <button :disabled="$v.user.$invalid" @click="slide(3)">Dalej</button>
-                            </div>
-                        </div>
-                        <div class="page">
-                            <div class="confirmation">
-                                <div class="confirmationSection ">
-                                    <div><b>Podsumowanie zamówienia:</b></div>
-                                    <div class="leftFloat"><span>T-shirt biały , nadruk: {{posNames}}</span></div>
-                                    <div class="rightFloat"><span> {{price}} jedn.</span></div>
-                                </div>
-                                <div class="confirmationSection">
-                                    <div><b>Dostawa</b></div>
-                                    <div class="leftFloat">Zamawiający:</div>
-                                    <div class="rightFloat"> {{user.name}} {{user.surname}}</div>
-                                    <div class="leftFloat">Adres:</div>
-                                    <div class="rightFloat"> {{user.street}} {{user.house}}, m. {{user.flat}}</div>
-                                    <div class="leftFloat">Telefon:</div>
-                                    <div class="rightFloat">{{user.phone}}</div>
-                                    <div class="leftFloat">Email:</div>
-                                    <div class="rightFloat lowercase"> {{user.email}}</div>
+                            <div class="page">
+                                <div style="height: 140px; width:85%; ">
+                                    <p>Dziękujemy! Twoje zamówienie zostało złożone.</p>
+                                    <p><b>Informacje na temat zamówienia:</b></p>
+
+                                    <table class="orderConfirmation">
+                                        <tr>
+                                            <th>Zamawiający</th>
+                                            <td>{{user.name}} {{user.surname}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Dostawa</th>
+                                            <td>{{user.street}} {{user.house}}, m. {{user.flat}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th></th>
+                                            <td>{{user.phone}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th></th>
+                                            <td>{{user.email}}</td>
+                                        </tr>
+                                    </table>
                                 </div>
 
                             </div>
-                            <div class="field btns">
-                                <button @click="slide(2)">Cofnij</button>
-                                <button class="makeOrderButton" @click="order">Złóż zamówienie</button>
-                            </div>
-                        </div>
-                        <div class="page">
-                            <div style="height: 140px; width:85%; ">
-                                <p>Dziękujemy! Twoje zamówienie zostało złożone.</p>
-                                <p><b>Informacje na temat zamówienia:</b></p>
 
-                                <table class="orderConfirmation">
-                                    <tr>
-                                        <th>Zamawiający</th>
-                                        <td>{{user.name}} {{user.surname}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Dostawa</th>
-                                        <td>{{user.street}} {{user.house}}, m. {{user.flat}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th></th>
-                                        <td>{{user.phone}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th></th>
-                                        <td>{{user.email}}</td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                        </div>
-
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -634,9 +636,13 @@
     .ellipse {
         width: 720px;
         height: auto;;
-        margin-left: 400px;
         background: #DDDDF0;
         border-radius: 200px
+    }
+
+    .center {
+        display: flex;
+        justify-content: center
     }
 
 </style>
