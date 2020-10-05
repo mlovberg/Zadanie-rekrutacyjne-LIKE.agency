@@ -9,12 +9,10 @@
 
 <script>
 import OrderForm from './components/OrderForm.vue'
-// import Preview from './components/Preview.vue'
 export default {
   name: 'App',
   components: {
-    OrderForm,
-    // Preview
+    OrderForm
   }
 }
 </script>
